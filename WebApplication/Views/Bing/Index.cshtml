@@ -1,0 +1,103 @@
+﻿@{
+    Layout = null;
+}
+@using WebApplication.Models
+@model List<BingModel>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>每日一图</title>
+    <link href="~/css/swiper.min.css" rel="stylesheet" />
+    <link href="~/css/style.min.css" rel="stylesheet" />
+</head>
+<body>
+    <header><ul><li><img src="/images/logo.png"></li><li>稳步 践行</li></ul><div class="pcHidden" style="float:right; padding:0 20px; line-height:60px;">mobile menu</div></header>
+    <!-- Swiper -->
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            @foreach (var item in Model)
+            {
+                <div class="swiper-slide" style="background-color:black">
+                    <div class="full preload middle">
+                        <img data-src="@item.Url" class="swiper-lazy" onerror="javascript:this.src='/images/big-data.jpg';">
+                        <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+                    </div>
+                </div>
+            }
+
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev swiper-button-white"></div><!--左箭头-->
+        <div class="swiper-button-next swiper-button-white"></div><!--右箭头-->
+    </div>
+    <div class="pcHidden" style="line-height:500px; text-align:center;">ohter content</div>
+    <footer>
+        @*<span id="pageindex">1</span> / <span>@Model.Count</span>*@
+        <div>经营许可证编号： <a href="http://beian.miit.gov.cn/" style="text-decoration:none;color:#000000;" target="_blank">辽ICP备18004005号</a></div>
+    </footer>
+    <!-- Swiper JS -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/swiper.min.js"></script>
+    <!-- Initialize Swiper -->
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            lazy: true,
+            loop: true,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev'
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                dynamicBullets: true
+            },
+            keyboard: {
+                enabled: true
+            },
+            on: {
+                slideChangeTransitionEnd: function () {
+                    //切换结束时，告诉我现在是第几个slide
+                    var index = this.realIndex;
+                    var current = index + 1;
+                    //$("#info" + index + "").show();
+                    $("#pageindex").html(current);
+                }
+            }
+        });
+        //0.625   5/8
+        function homeResize() {
+            var winHeight = $(window).height();
+            var winWidth = $(window).width();
+            var fullBox = $(".swiper-slide .full");
+
+            if (winWidth > 768) {
+                if (winWidth / winHeight > 1.6) {
+                    fullBox.width("100%").height(winWidth * 0.625).css({
+                        "position": 'absolute',
+                        "left": "0px",
+                        "top": (winHeight - fullBox.height()) / 2 + "px"
+                    });
+                } else {
+                    fullBox.width(winHeight * 1.6).height("100%").css({
+                        "position": 'absolute',
+                        "left": "-" + (fullBox.width() - winWidth) / 2 + "px",
+                        "top": "0px"
+                    });
+                }
+            } else {
+                fullBox.width("100%").height("auto").css({
+                    "position": 'static'
+                });
+            }
+        }
+
+        homeResize();
+
+        $(window).resize(function () {
+            homeResize();
+        });
+    </script>
+</body>
+</html>

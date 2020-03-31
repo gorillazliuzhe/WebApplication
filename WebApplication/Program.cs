@@ -6,14 +6,22 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using WebApplication.Filters;
 
 namespace WebApplication
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            try
+            {
+                await CreateHostBuilder(args).Build().RunWithTasksAsync();
+            }
+            catch (System.Exception e)
+            {
+                System.Console.WriteLine(e.ToString());
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

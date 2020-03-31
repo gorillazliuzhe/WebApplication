@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Text;
+using WebApplication.Business;
+using WebApplication.Data;
+using WebApplication.Filters;
+using WebApplication.Models;
 
 namespace WebApplication
 {
@@ -23,6 +23,11 @@ namespace WebApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            services.Configure<Settings>(Configuration.GetSection("Settings"));
+            services.AddScoped<IBingRepository, BingRepository>();
+            services.AddScoped<IBusiness,Business.Business>();
+            services.AddStartupTask<CommonStartupFilter>();
             services.AddControllersWithViews();
         }
 
@@ -50,7 +55,7 @@ namespace WebApplication
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Bing}/{action=Index}/{id?}");
             });
         }
     }

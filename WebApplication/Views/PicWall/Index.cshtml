@@ -1,0 +1,59 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>图片墙</title>
+    <link href="~/css/picwall.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <div id="screen">
+        <div id="command">
+            <h1>故意的谎言</h1>
+            <p>挑衅的,无情的,深思熟虑的,他们的谎言不会妨碍我。</p>
+            <div id="bar"></div>
+        </div>
+        <div id="urlInfo"></div>
+    </div>
+<script src="~/js/picwall.js"></script>
+    <script type="text/javascript">
+        /* ==== start script ==== */
+        setTimeout(function () {
+            m3D.init(
+                [
+                    { src: '../images/1.png', url: 'http://metro.360wll.cn/Bing/Index', title: '必应美图', color: '#fff' },
+                    { src: '../images/2.png' },
+                    { src: '../images/3.png' },
+                    { src: '../images/4.png' },
+                    { src: '../images/5.png' },
+                    { src: '../images/6.png' },
+                    { src: '../images/7.png' },
+                    { src: '../images/8.png' },
+                    { src: '../images/9.png' },
+                    { src: '../images/10.png' },
+                    { src: '../images/1.png', url: 'http://metro.360wll.cn/Bing/Indexm', title: '必应美图', color: '#fff' },
+                    { src: '../images/2.png' },
+                    { src: '../images/3.png' },
+                    { src: '../images/4.png' },
+                    { src: '../images/5.png' },
+                    { src: '../images/6.png' },
+                    { src: '../images/7.png' },
+                    { src: '../images/8.png' },
+                    { src: '../images/9.png' },
+                    { src: '../images/10.png' },
+                    { src: '../images/1.png', url: 'http://metro.360wll.cn/Bing/Index', title: '必应美图', color: '#fff' },
+                    { src: '../images/2.png' },
+                    { src: '../images/3.png' },
+                    { src: '../images/4.png' }
+                ]
+            );
+        }, 500);
+    </script>
+</body>
+</html>
