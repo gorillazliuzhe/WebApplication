@@ -5,8 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.30" />
+    <PackageReference Include="Dapper" Version="2.0.35" />
+    <PackageReference Include="Magicodes.IE.Excel" Version="2.1.4" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="1.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
+    <PackageReference Include="sautinsoft.pdffocus" Version="7.5.3.27" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\JiHua\" />
   </ItemGroup>
 
 </Project>

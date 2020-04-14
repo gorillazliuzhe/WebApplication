@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>生成报表</h1>
+<form asp-controller="UpLoadFile" asp-action="UploadFiles" enctype="multipart/form-data" onsubmit="AJAXSubmit(this);return false;" method="post">
+    <dl>
+        <dt>
+            <label for="files">文件</label>
+        </dt>
+        <dd>
+            <input type="file" id="files" name="files" multiple />
+        </dd>
+    </dl>
+
+    <input type="submit" value="上传" />
+
+    <div style="margin-top:15px">
+        <a id="fileexel" href="" style="display:none" >下载报表</a>
+    </div>
+</form>
+
+
+@section Scripts{
+    <script>
+
+        async function AJAXSubmit (oFormElement) {
+            const formData = new FormData(oFormElement);
+
+            try {
+                const response = await fetch(oFormElement.action, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    var day2 = new Date();
+                    day2.setTime(day2.getTime());
+                    var filename = day2.getFullYear() + "-" + (day2.getMonth() + 1) + "-" + day2.getDate() + ".xlsx";
+                    $("#fileexel").show();
+                    document.getElementById("fileexel").setAttribute("href", "https://www.360wll.cn/JiHua/" + filename);
+                    //document.getElementById("fileexel").setAttribute("href", "https://localhost:5001/JiHua/" + filename);
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    </script>
+}
+
+
