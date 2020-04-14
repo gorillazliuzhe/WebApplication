@@ -8,6 +8,7 @@ using System.Xml;
 using Magicodes.ExporterAndImporter.Core;
 using Magicodes.ExporterAndImporter.Excel;
 using Microsoft.AspNetCore.Hosting;
+using Polly;
 using SautinSoft;
 using WebApplication.Models;
 
@@ -328,20 +329,39 @@ namespace WebApplication.Utilities
         /// <param name="srcPath"></param>
         public static void DelectDir(string srcPath)
         {
-            DirectoryInfo dir = new DirectoryInfo(srcPath);
-            FileSystemInfo[] fileinfo = dir.GetFileSystemInfos();  //返回目录中所有文件和子目录
-            foreach (FileSystemInfo i in fileinfo)
+            var exmsg = "";
+            var fallback = Policy.Handle<Exception>().Fallback(c =>
+           {
+               Console.WriteLine("[执行降级操作]:\r\n" + exmsg);
+
+           }, ex =>
+           {
+               if (ex.InnerException != null) exmsg = ex.InnerException.ToString();
+           });
+
+            // 重试策略
+            var retry = Policy.Handle<Exception>().WaitAndRetry(5, i => TimeSpan.FromSeconds(Math.Pow(2, i)), (exception, i) =>
             {
-                if (i is DirectoryInfo)            //判断是否文件夹
-                {
-                    DirectoryInfo subdir = new DirectoryInfo(i.FullName);
-                    subdir.Delete(true);          //删除子目录和文件
-                }
-                else
-                {
-                    File.Delete(i.FullName);      //删除指定文件
-                }
-            }
+                Console.WriteLine($"重试次数:{i}");
+            });
+            var policy = Policy.Wrap(fallback, retry);
+            policy.Execute(() =>
+            {
+               DirectoryInfo dir = new DirectoryInfo(srcPath);
+               FileSystemInfo[] fileinfo = dir.GetFileSystemInfos();  //返回目录中所有文件和子目录
+               foreach (FileSystemInfo i in fileinfo)
+               {
+                   if (i is DirectoryInfo)            //判断是否文件夹
+                   {
+                       DirectoryInfo subdir = new DirectoryInfo(i.FullName);
+                       subdir.Delete(true);          //删除子目录和文件
+                   }
+                   else
+                   {
+                       File.Delete(i.FullName);      //删除指定文件
+                   }
+               }
+            });
         }
         /// <summary>
         /// 获取辽宁所有城市
@@ -350,7 +370,7 @@ namespace WebApplication.Utilities
         public static List<CityTown> GetCityTownList(IWebHostEnvironment webHostEnvironment)
         {
             List<CityTown> data = new List<CityTown> { new CityTown { CityName = "长春", TownName = "" } };
-            var path = webHostEnvironment.WebRootPath+@"\Template\CityTown.txt";
+            var path = webHostEnvironment.WebRootPath + @"\Template\CityTown.txt";
             foreach (string str in File.ReadAllLines(path))
             {
                 var arry = str.Split("\t", StringSplitOptions.RemoveEmptyEntries);
@@ -372,7 +392,7 @@ namespace WebApplication.Utilities
         /// <returns></returns>
         public static string GetWeek()
         {
-            var week = (int) DateTime.Now.AddDays(1).DayOfWeek switch
+            var week = (int)DateTime.Now.AddDays(1).DayOfWeek switch
             {
                 0 => "日",
                 1 => "一",
