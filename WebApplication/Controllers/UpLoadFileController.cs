@@ -43,7 +43,7 @@ namespace WebApplication.Controllers
                 {
                     Directory.CreateDirectory(fileDir);
                 }
-                string filePath = fileDir + $@"\{fileName}";
+                string filePath = fileDir + $@"/{fileName}";
                 size += file.Length;
                 FileStream fileStream = System.IO.File.Create(filePath);
                 await using FileStream fs = fileStream;

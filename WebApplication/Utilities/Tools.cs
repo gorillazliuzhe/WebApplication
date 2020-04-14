@@ -240,7 +240,7 @@ namespace WebApplication.Utilities
                     #endregion
 
                     XyunJh jh = new XyunJh { Bsjhs = bsjhs };
-                    await ExportByTemplate(webHostEnvironment.WebRootPath + @"\JiHua\" + jihuafile, jh, webHostEnvironment);
+                    await ExportByTemplate(webHostEnvironment.WebRootPath + @"/JiHua/" + jihuafile, jh, webHostEnvironment);
                     try
                     {
                         DelectDir(pdfFile);
@@ -309,7 +309,7 @@ namespace WebApplication.Utilities
             try
             {
                 //模板路径
-                string tplPath = webHostEnvironment.WebRootPath + @"\Template\Template.xlsx";
+                string tplPath = webHostEnvironment.WebRootPath + @"/Template/Template.xlsx";
                 //创建Excel导出对象 
                 IExportFileByTemplate exporter = new ExcelExporter();
                 //导出路径 
@@ -370,7 +370,7 @@ namespace WebApplication.Utilities
         public static List<CityTown> GetCityTownList(IWebHostEnvironment webHostEnvironment)
         {
             List<CityTown> data = new List<CityTown> { new CityTown { CityName = "长春", TownName = "" } };
-            var path = webHostEnvironment.WebRootPath + @"\Template\CityTown.txt";
+            var path = webHostEnvironment.WebRootPath + @"/Template/CityTown.txt";
             foreach (string str in File.ReadAllLines(path))
             {
                 var arry = str.Split("\t", StringSplitOptions.RemoveEmptyEntries);
